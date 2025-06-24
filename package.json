@@ -1,0 +1,28 @@
+{
+  "name": "desafio5",
+  "version": "1.0.0",
+  "description": "Fala galera! Criei esse guia de comandos git e github para mantermos uma colaboração organizada...",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "dev": "nodemon src/server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Myguel-Angelo/Desafio5-API.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Myguel-Angelo/Desafio5-API/issues"
+  },
+  "homepage": "https://github.com/Myguel-Angelo/Desafio5-API#readme",
+  "dependencies": {
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "nodemon": "^3.1.10",
+    "sqlite3": "^5.1.7"
+  }
+}
