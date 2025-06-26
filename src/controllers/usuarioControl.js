@@ -29,7 +29,6 @@ exports.login = (req, res) => {
 
   db.get('SELECT * FROM usuarios WHERE email = ?', [email], async (err, usuario) => {
     if (!usuario) return res.status(404).json({ mensagem: 'Usuário não encontrado' });
-    console.log(usuario);
 
     const senhaCorreta = await bcrypt.compare(senha, usuario.senha_hash);
     if (!senhaCorreta) return res.status(401).json({ mensagem: 'Senha incorreta' });
