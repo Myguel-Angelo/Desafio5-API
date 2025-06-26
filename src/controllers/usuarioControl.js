@@ -13,7 +13,7 @@ exports.registrar = async (req, res) => {
     const createdAt = new Date().toISOString();
 
     const sql = `
-      INSERT INTO usuarios (nome, email, senha_hash, telefone, data_nascimento, created_at)
+      INSERT INTO usuarios (nome, email, senha, telefone, data_nascimento, created_at)
       VALUES (?, ?, ?, ?, ?, ?)
     `;
 
@@ -30,7 +30,7 @@ exports.login = (req, res) => {
   db.get('SELECT * FROM usuarios WHERE email = ?', [email], async (err, usuario) => {
     if (!usuario) return res.status(404).json({ mensagem: 'Usuário não encontrado' });
 
-    const senhaCorreta = await bcrypt.compare(senha, usuario.senha_hash);
+    const senhaCorreta = await bcrypt.compare(senha, usuario.senha);
     if (!senhaCorreta) return res.status(401).json({ mensagem: 'Senha incorreta' });
 
     const token = jwt.sign({ id: usuario.id }, process.env.JWT_SECRET, { expiresIn: '1d' });
