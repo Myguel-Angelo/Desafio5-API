@@ -12,4 +12,7 @@ router.post('/auth/login', usuarioControl.login);
 // Rota protegida para pegar dados do usuário logado
 router.get('/me', authMiddleware, usuarioControl.pegarUsuarioLogado);
 
+router.put('/atualizar', authMiddleware, usuarioControl.atualizarUsuario);
+
+
 module.exports = router;
