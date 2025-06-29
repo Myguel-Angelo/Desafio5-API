@@ -9,6 +9,7 @@ const PORT = process.env.PORT || 3000;
 const usuarioRoutes = require('./routes/usuarios');
 const medicoRoutes = require('./routes/medicos');
 const areasRoutes = require('./routes/areas');
+const consultasroutes = require('./routes/consultas')
 
 app.use(cors());
 app.use(bodyParser.json());
@@ -20,6 +21,7 @@ app.get('/', (req, res) => {
 app.use('/api/usuarios', usuarioRoutes);
 app.use('/api/medicos', medicoRoutes);
 app.use('/api/areas', areasRoutes);
+app.use('/api/consultas', consultasroutes);
 
 app.listen(PORT, () => {
   console.log(`🚀 Servidor rodando em http://localhost:${PORT}`);

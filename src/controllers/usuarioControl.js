@@ -6,7 +6,7 @@ require('dotenv').config();
 
 // controlador para registrar usuário
 exports.registrar = async (req, res) => {
-  const { nome, email, senha, telefone, data_nascimento } = req.body;
+  const { nome, email, data_nascimento, senha } = req.body;
 
   try {
     const [rows] = await db.execute('SELECT * FROM usuarios WHERE email = ?', [email])
@@ -15,12 +15,12 @@ exports.registrar = async (req, res) => {
     const senhaHash = await bcrypt.hash(senha, 10);
 
     const sql = `
-      INSERT INTO usuarios (nome, email, senha, telefone, data_nascimento)
+      INSERT INTO usuarios (nome, email, senha, data_nascimento, origin)
       VALUES (?, ?, ?, ?, ?)
     `;
 
     try {
-      const [results] = await db.execute(sql, [nome, email, senhaHash, telefone, data_nascimento]);
+      const [results] = await db.execute(sql, [nome, email, senhaHash, data_nascimento, senha]);
       res.status(201).json({ id: results.insertId, mensagem: 'Usuário registrado com sucesso' });
     } catch (err) {
       res.status(500).json({ mensagem: 'Erro ao registrar usuário', erro: err.message });
@@ -54,7 +54,7 @@ exports.pegarUsuarioLogado = async (req, res) => {
   const userId = req.userId;
 
   try {
-    const [rows] = await db.execute('SELECT id, nome, email, telefone, data_nascimento FROM usuarios WHERE id = ?', [userId])
+    const [rows] = await db.execute('SELECT id, nome, email, data_nascimento FROM usuarios WHERE id = ?', [userId])
     if (rows.length === 0) return res.status(404).json({ mensagem: 'Usuário não encontrado' });
 
     res.json(rows[0]);
@@ -83,5 +83,18 @@ exports.atualizarUsuario = async (req, res) => {
     res.status(200).json({ mensagem: 'Usuário atualizado com sucesso.' });
   } catch (err) {
     res.status(500).json({ error: 'Erro ao atualizar usuário.', details: err.message });
+  }
+};
+
+
+exports.listarUsuarios = async (req, res) => {
+  try {
+    const [rows] = await db.execute('SELECT email, origin FROM usuarios')
+
+    if (rows.length === 0) return res.status(404).json({ mensagem: 'Sem usuários' });
+
+    res.status(200).json(rows);
+  } catch (err) {
+    res.status(500).json({ error: err.message });
   }
 };
